@@ -1,13 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import  {Button} from 'antd';
+import './App.less';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        hello world！create-react-app
-        管理后台web工程
-      </header>
+        <Button type="primary">123456</Button>
+        <Button type="primary" loading>
+            Loading123
+        </Button>
     </div>
   );
 }
