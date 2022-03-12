@@ -1,9 +1,18 @@
 import React from "react";
 import {Layout,Menu} from 'antd';
-import './DrawerMenu.less';//导入样式
+import './DrawerMenu.less';
+import {HomeOutlined,ProjectOutlined,
+    AppstoreAddOutlined,
+    TeamOutlined,
+    PicCenterOutlined,
+    ShopOutlined,
+    FileAddFilled
+    } from "@ant-design/icons";
+//导入样式
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;
+
 //菜单配置
 const MENUS={
     home:{
@@ -33,10 +42,58 @@ const MENUS={
 };
 
 class Index extends  React.Component{
-
+    state = {
+        selectedKeys:MENUS.home.key,//当前选中的菜单项
+    }
     //方法
     onCollapse = collapsed=>{
         this.setState({collapsed});
+    }
+    onSelect=selectedKeys=>{
+        this.setState({
+            selectedKeys:[selectedKeys.key]
+        });
+    }
+
+
+    menu(){
+        //defaultSelectedKeys:初始化选中的菜单项
+        //Menu.Item 一级菜单
+        return <Menu theme='dark' defaultSelectedKeys={this.state.selectedKeys}
+                     mode = 'inline'
+                     onSelect={this.onSelect}
+        >
+            <Menu.Item key={MENUS.home.key} icon={<HomeOutlined/>}>
+                {MENUS.home.title}
+            </Menu.Item>
+
+            <SubMenu key='categoryList'
+                     title='类别管理'
+                     icon={<ProjectOutlined/>}>
+                <Menu.Item key={MENUS.categoryList.key} icon={<AppstoreAddOutlined/>}>
+                    {MENUS.categoryList.title}
+                </Menu.Item>
+                <Menu.Item key={MENUS.addCategory.key} icon={<PicCenterOutlined/>}>
+                    {MENUS.addCategory.title}
+                </Menu.Item>
+            </SubMenu>
+
+            <Menu.Item key={MENUS.user.key} icon={<TeamOutlined/>}>
+                {MENUS.user.title}
+            </Menu.Item>
+
+            <SubMenu key='configCenter'
+                     title='配置中心'
+                     icon={<ProjectOutlined/>}>
+                <Menu.Item key={MENUS.configList.key} icon={<ShopOutlined/>}>
+                    {MENUS.configList.title}
+                </Menu.Item>
+                <Menu.Item key={MENUS.addConfig.key} icon={<FileAddFilled/>}>
+                    {MENUS.addConfig.title}
+                </Menu.Item>
+            </SubMenu>
+
+        </Menu>
     }
 
     render() {
@@ -52,6 +109,7 @@ class Index extends  React.Component{
                     <img className='drawer-logo' alt="logo" src='https://www.devio.org/img/avatar.png'/>
                     {headTitle}
                 </div>
+                {this.menu()}
             </Sider>
         );
     }
