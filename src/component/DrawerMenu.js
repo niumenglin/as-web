@@ -1,5 +1,7 @@
 import React from "react";
 import {Layout,Menu} from 'antd';
+/* withRouter不存在 */
+import {withRouter} from 'react-router-dom';
 import './DrawerMenu.less';
 import {HomeOutlined,ProjectOutlined,
     AppstoreAddOutlined,
@@ -23,20 +25,20 @@ const MENUS={
         key:'user',
         title:'用户管理',
     },
-    categoryList:{
-        key:'categoryList',
+    category:{
+        key:'category',
         title:'类别列表',
     },
-    addCategory:{
-        key:'addCategory',
+    categoryAdd:{
+        key:'categoryAdd',
         title:'添加类别',
     },
-    configList:{
-        key:'configList',
+    config:{
+        key:'config',
         title:'配置列表',
     },
-    addConfig:{
-        key:'addConfig',
+    configAdd:{
+        key:'configAdd',
         title:'添加配置',
     }
 };
@@ -53,6 +55,36 @@ class Index extends  React.Component{
         this.setState({
             selectedKeys:[selectedKeys.key]
         });
+        let pathname;
+        switch (selectedKeys.key) {
+            case 'home':
+                pathname = "/";
+                break;
+            case 'category':
+                pathname = "/category";
+                break;
+            case 'categoryAdd':
+                pathname = "/category-add";
+                break;
+            case 'user':
+                pathname = '/user';
+                break;
+            case 'config':
+                pathname = '/config';
+                break;
+            case 'configAdd':
+                pathname = '/config-add';
+                break;
+            default:
+                break;
+        }
+        const  {history,onMenuSelect} = this.props;
+        const menu = MENUS[selectedKeys.key];
+        if (pathname){
+            //pathname不为空，如果有二级路径，需要设置exact={true}
+            history.push(pathname);
+            onMenuSelect&&onMenuSelect(pathname,menu.title);
+        }
     }
 
 
@@ -70,11 +102,11 @@ class Index extends  React.Component{
             <SubMenu key='categoryList'
                      title='类别管理'
                      icon={<ProjectOutlined/>}>
-                <Menu.Item key={MENUS.categoryList.key} icon={<AppstoreAddOutlined/>}>
-                    {MENUS.categoryList.title}
+                <Menu.Item key={MENUS.category.key} icon={<AppstoreAddOutlined/>}>
+                    {MENUS.category.title}
                 </Menu.Item>
-                <Menu.Item key={MENUS.addCategory.key} icon={<PicCenterOutlined/>}>
-                    {MENUS.addCategory.title}
+                <Menu.Item key={MENUS.categoryAdd.key} icon={<PicCenterOutlined/>}>
+                    {MENUS.categoryAdd.title}
                 </Menu.Item>
             </SubMenu>
 
@@ -85,11 +117,11 @@ class Index extends  React.Component{
             <SubMenu key='configCenter'
                      title='配置中心'
                      icon={<ProjectOutlined/>}>
-                <Menu.Item key={MENUS.configList.key} icon={<ShopOutlined/>}>
-                    {MENUS.configList.title}
+                <Menu.Item key={MENUS.config.key} icon={<ShopOutlined/>}>
+                    {MENUS.config.title}
                 </Menu.Item>
-                <Menu.Item key={MENUS.addConfig.key} icon={<FileAddFilled/>}>
-                    {MENUS.addConfig.title}
+                <Menu.Item key={MENUS.configAdd.key} icon={<FileAddFilled/>}>
+                    {MENUS.configAdd.title}
                 </Menu.Item>
             </SubMenu>
 
@@ -115,5 +147,7 @@ class Index extends  React.Component{
     }
 }
 
+//withRouter是react-router的一个高阶组件，获取history
+//render时，会把match、location和history传入props
 //导出组件  export default 类名;
-export default Index;
+export default withRouter(Index);
