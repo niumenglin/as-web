@@ -1,9 +1,12 @@
 import {url} from './api';
 import {userList,updateUser} from './user';
+import {categoryList,removeCategory} from './category';
 
 export default {
     userList,
-    updateUser
+    updateUser,
+    categoryList,
+    removeCategory
 }
 const AUTH_TOKEN = 'MTU5Mjg1MDg3NDcwNw==';
 
@@ -34,6 +37,14 @@ export function put(api) {
                 }
             });
     }
+}
+export function del(api) {
+    return queryParams=>fetch(buildParams(url+api,queryParams),{
+        method:'DELETE',
+        headers:{
+            'auth-token':AUTH_TOKEN
+        }
+    });
 }
 function buildParams(url,params={}) {
     let newUrl = new URL(url);
