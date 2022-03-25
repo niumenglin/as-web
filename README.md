@@ -3,7 +3,21 @@
 ### `cd as-web`
 ### `npm start or yarn start`
 
-
+### 前端项目打包与部署
+#### 一、部署到CDN服务器
+1.配置homepage。打开package.json
+#### `{"homepage": "http://127.0.0.1/build"}`
+2.进入项目目录下，执行一下命令
+#### `yarn build`
+#------------------
+#### 二、部署到Node
+无需配置homepage
+#### 1.构建项目
+#### `yarn build`
+#### 2.安装serve
+#### `npm install -g serve`
+#### `serve -s build`
+#------------------
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
