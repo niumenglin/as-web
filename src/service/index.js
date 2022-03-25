@@ -1,12 +1,13 @@
 import {url} from './api';
 import {userList,updateUser} from './user';
-import {categoryList,removeCategory} from './category';
+import {categoryList,removeCategory,addCategory} from './category';
 
 export default {
     userList,
     updateUser,
     categoryList,
-    removeCategory
+    removeCategory,
+    addCategory
 }
 const AUTH_TOKEN = 'MTU5Mjg1MDg3NDcwNw==';
 
@@ -45,6 +46,23 @@ export function del(api) {
             'auth-token':AUTH_TOKEN
         }
     });
+}
+export function post(api) {
+    /**
+     * 第一个参数作为body参数，第二个参数作为URL path或者查询参数
+     */
+    return params=>{
+        return queryParams=>fetch(buildParams(url+api,queryParams),
+            {
+                method:'POST',
+                body:JSON.stringify(params),
+                headers:{
+                    'content-type':'application/json',
+                    'auth-token':AUTH_TOKEN
+                }
+            }
+            )
+    }
 }
 function buildParams(url,params={}) {
     let newUrl = new URL(url);
