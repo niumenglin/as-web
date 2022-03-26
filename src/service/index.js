@@ -1,13 +1,15 @@
 import {url} from './api';
 import {userList,updateUser} from './user';
 import {categoryList,removeCategory,addCategory} from './category';
+import {getConfig} from './config';
 
 export default {
     userList,
     updateUser,
     categoryList,
     removeCategory,
-    addCategory
+    addCategory,
+    getConfig
 }
 const AUTH_TOKEN = 'MTU5Mjg1MDg3NDcwNw==';
 
