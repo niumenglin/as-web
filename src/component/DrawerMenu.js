@@ -12,86 +12,59 @@ import {HomeOutlined,ProjectOutlined,
     } from "@ant-design/icons";
 //导入样式
 
+//as表示起个别名
+import NavigationUtil, {RouteConfig as MENUS,ROUTE_CHANGE} from './Navigator';
+import EventBus from 'react-native-event-bus';
+
 const {Sider} = Layout;
 const {SubMenu} = Menu;
 
-//菜单配置
-const MENUS={
-    home:{
-        key:'home',
-        title:'首页',
-    },
-    user:{
-        key:'user',
-        title:'用户管理',
-    },
-    category:{
-        key:'category',
-        title:'类别列表',
-    },
-    categoryAdd:{
-        key:'categoryAdd',
-        title:'添加类别',
-    },
-    config:{
-        key:'config',
-        title:'配置列表',
-    },
-    configAdd:{
-        key:'configAdd',
-        title:'添加配置',
-    }
-};
 
 class Index extends  React.Component{
     state = {
         selectedKeys:MENUS.home.key,//当前选中的菜单项
     }
+
+    //页面加载时
+    componentDidMount() {
+        EventBus.getInstance().addListener(ROUTE_CHANGE,this.listener=route=>{
+           const {goto:{key,pathname,title}} = route;
+           this.setState(
+               {
+                   selectedKeys:[key]
+               }
+           );
+            const {onMenuSelect} = this.props;
+            onMenuSelect&&onMenuSelect(pathname,title);
+        });
+    }
+    //页面销毁时
+    componentWillMount() {
+        EventBus.getInstance().removeListener(this.listener);
+    }
+
     //方法
     onCollapse = collapsed=>{
         this.setState({collapsed});
     }
     onSelect=selectedKeys=>{
-        this.setState({
-            selectedKeys:[selectedKeys.key]
-        });
-        let pathname;
-        switch (selectedKeys.key) {
-            case 'home':
-                pathname = "/";
-                break;
-            case 'category':
-                pathname = "/category";
-                break;
-            case 'categoryAdd':
-                pathname = "/category-add";
-                break;
-            case 'user':
-                pathname = '/user';
-                break;
-            case 'config':
-                pathname = '/config';
-                break;
-            case 'configAdd':
-                pathname = '/config-add';
-                break;
-            default:
-                break;
-        }
-        const  {history,onMenuSelect} = this.props;
         const menu = MENUS[selectedKeys.key];
+        let pathname = (menu || {}).pathname;
+        const {history,onMenuSelect} = this.props;
         if (pathname){
-            //pathname不为空，如果有二级路径，需要设置exact={true}
-            history.push(pathname);
+            NavigationUtil.goto(menu,history)();
             onMenuSelect&&onMenuSelect(pathname,menu.title);
         }
     }
 
 
     menu(){
+        const {selectedKeys} = this.state;
         //defaultSelectedKeys:初始化选中的菜单项
         //Menu.Item 一级菜单
-        return <Menu theme='dark' defaultSelectedKeys={this.state.selectedKeys}
+        return <Menu theme='dark'
+                     defaultSelectedKeys={selectedKeys}
+                     selectedKeys={selectedKeys}
                      mode = 'inline'
                      onSelect={this.onSelect}
         >

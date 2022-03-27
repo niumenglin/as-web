@@ -4,6 +4,7 @@ import {Table,Input,Button} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import api from '../../service';
 import Highlighter from 'react-highlight-words';
+import NavigationUtil, {RouteConfig} from '../../component/Navigator';
 const PAGE_SIZE=10;
 export default class Index extends React.Component{
     state={
@@ -118,7 +119,7 @@ export default class Index extends React.Component{
     }
 
     handleClick(item){
-
+        NavigationUtil.goto(RouteConfig.configAdd,this.props.history)({state:{item}})
     }
 
     handleSearch = (selectedKeys,confirm,dataIndex)=>{

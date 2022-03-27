@@ -12,6 +12,13 @@ export default class Index extends React.Component{
       visibleAlert:false,
       errorMsg:null
     };
+    constructor(props) {
+        super(props);
+        const {location:{state:{item}={}}={}} = this.props;
+        const {namespace,originalUrl,jsonUrl,version}= item || {};
+        this.namespace = namespace;
+        this.version = version;
+    }
     onSubmit=()=>{
         if (!this.namespace){
             this.setState({
@@ -55,6 +62,7 @@ export default class Index extends React.Component{
                         defaultValue={this.namespace}
                         placeholder='请输入...'
                         autoSize={{maxRows:1}}
+                        disabled={this.namespace!=null}
                     />
                 </div>
                 <TextArea
